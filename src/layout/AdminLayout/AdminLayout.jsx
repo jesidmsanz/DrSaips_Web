@@ -1,21 +1,15 @@
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
 import Head from "next/head";
 import Sidebar, { SidebarOverlay } from "@layout/AdminLayout/Sidebar/Sidebar";
 import Header from "@layout/AdminLayout/Header/Header";
 import Footer from "@layout/AdminLayout/Footer/Footer";
-import { Container } from "react-bootstrap";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export default function AdminLayout({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { status, data } = useSession();
+  const { status } = useSession();
   const route = useRouter();
 
   // Show status for xs screen
