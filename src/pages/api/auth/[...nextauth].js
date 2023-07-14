@@ -23,7 +23,7 @@ const options = {
             return Promise.resolve({
               id: user.LOG,
               name: user.LOG,
-              redirect: "/admin",
+              redirect: "/admin/audit_trail",
             });
           }
         }

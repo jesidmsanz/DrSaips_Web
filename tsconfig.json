@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -74,7 +74,7 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
-  ],
+, "src/pages/_app.js", "src/pages/admin/index.jsx", "src/pages/login.jsx", "src/layout/AdminLayout/AdminLayout.jsx", "src/pages/register.jsx", "src/layout/AdminLayout/Header/HeaderProfileNav.jsx", "src/layout/index.jsx", "src/layout/AdminLayout/Breadcrumb/Breadcrumb.jsx", "src/layout/AdminLayout/Footer/Footer.jsx", "src/layout/AdminLayout/Header/Header.jsx", "src/layout/AdminLayout/Header/HeaderFeaturedNav.jsx", "src/layout/AdminLayout/Header/HeaderNotificationNav.jsx", "src/layout/AdminLayout/Sidebar/SidebarNav.jsx"  ],
   "exclude": [
     "node_modules"
   ]

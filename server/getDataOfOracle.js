@@ -3,6 +3,7 @@ const OracleDB = require("oracledb");
 export const getDataOfOracle = async (query) => {
   try {
     if (query) {
+      console.log("query", query);
       OracleDB.initOracleClient({ libDir: "C:\\instantclient_21_10" });
 
       const connection = await OracleDB.getConnection({
@@ -13,14 +14,12 @@ export const getDataOfOracle = async (query) => {
         externalAuth: false,
       });
 
-      // Realiza la consulta a la tabla "users"
-      const result = await connection.execute(query);
+      const result = await connection.execute(query, [], { resultSet: true });
+
+      const resultSet = result.resultSet;
+      const rows = await resultSet.getRows(); // Obtener todas las filas
+
       const columnNames = result.metaData.map((column) => column.name);
-
-      // Obtener los valores de las filas
-      const rows = result.rows;
-
-      // Crear un array de objetos con los títulos de las columnas y los valores de las filas
       const jsonData = rows.map((row) => {
         const obj = {};
         columnNames.forEach((columnName, index) => {
@@ -29,10 +28,11 @@ export const getDataOfOracle = async (query) => {
         return obj;
       });
 
-      // Cierra la conexión al finalizar
+      console.log("jsonData.length", jsonData.length);
+
+      await resultSet.close();
       await connection.close();
 
-      // Mostrar el resultado en formato JSON con los títulos de las columnas
       return jsonData;
     }
     return null;
