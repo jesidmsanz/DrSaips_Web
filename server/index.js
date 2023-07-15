@@ -23,6 +23,6 @@ app.prepare().then(() => {
   // Inicia el servidor
   server.listen(config.port, (err) => {
     if (err) throw err;
-    console.log(`Servidor Next.js iniciado en el puerto ${config.port}`);
+    console.log(`Servidor iniciado http://localhost:${config.port}`);
   });
 });
