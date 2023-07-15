@@ -33,7 +33,7 @@ export const convertToExcel = (data) => {
     });
     const downloadLink = document.createElement("a");
     downloadLink.href = URL.createObjectURL(excelData);
-    downloadLink.download = "datos.xlsx";
+    downloadLink.download = "Audit_Trail.xlsx";
     downloadLink.click();
   });
 };
