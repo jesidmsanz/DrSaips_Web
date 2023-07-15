@@ -5,7 +5,7 @@ export const getDataOfOracle = async (query) => {
     if (query) {
       console.log("query", query);
       // OracleDB.initOracleClient({ libDir: "C:\\instantclient_21_10" });
-      OracleDB.initOracleClient({ libDir: "/home/instantclient_21_10" });
+      OracleDB.initOracleClient();
 
       const connection = await OracleDB.getConnection({
         user: process.env.USER,
