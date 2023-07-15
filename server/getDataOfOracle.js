@@ -7,8 +7,8 @@ export const getDataOfOracle = async (query) => {
       OracleDB.initOracleClient({ libDir: "C:\\instantclient_21_10" });
 
       const connection = await OracleDB.getConnection({
-        user: "DRSAIPS",
-        password: "SPIASRD",
+        user: process.env.USER,
+        password: process.env.PASS,
         connectString:
           "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))(CONNECT_DATA =(SID= xe)))",
         externalAuth: false,
