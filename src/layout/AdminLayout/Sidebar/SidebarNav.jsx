@@ -1,24 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAddressCard,
-  faBell,
-  faFileLines,
-  faStar,
-  IconDefinition,
-} from "@fortawesome/free-regular-svg-icons";
-import {
-  faBug,
-  faCalculator,
-  faChartPie,
   faChevronUp,
-  faCode,
-  faDroplet,
-  faGauge,
-  faLayerGroup,
-  faLocationArrow,
-  faPencil,
-  faPuzzlePiece,
-  faFileExcel,
   faNoteSticky,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
@@ -37,6 +19,7 @@ import {
 } from "react-bootstrap";
 import classNames from "classnames";
 import Link from "next/link";
+import Image from "next/image";
 
 const SidebarNavItem = (props) => {
   const { icon, children, href } = props;
@@ -133,9 +116,24 @@ export default function SidebarNav() {
           </Badge>
         </small>
       </SidebarNavItem> */}
-      <SidebarNavTitle>Menu</SidebarNavTitle>
+      <SidebarNavItem href="/admin/audit_trail"></SidebarNavItem>
+      <div className="logo_left">
+        <Image
+          width={120}
+          height={70}
+          src="/assets/img/avatars/logoblanco.png"
+          alt="user@example.com"
+        />
+      </div>
+      {/* <SidebarNavTitle>Menu</SidebarNavTitle> */}
       <SidebarNavItem icon={faNoteSticky} href="/admin/audit_trail">
         Audit Trail
+      </SidebarNavItem>
+      <SidebarNavItem icon={faNoteSticky} href="#">
+        Reportes
+      </SidebarNavItem>
+      <SidebarNavItem icon={faNoteSticky} href="#">
+        Configuración
       </SidebarNavItem>
     </ul>
   );

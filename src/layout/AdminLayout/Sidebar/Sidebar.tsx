@@ -32,15 +32,6 @@ export default function Sidebar(props: { isShow: boolean; isShowMd: boolean }) {
       })}
       id="sidebar"
     >
-      <div className="avatar d-flex align-items-center justify-content-center">
-        <Image
-          width={100}
-          height={100}
-          src="/assets/img/avatars/logo_mini.png"
-          alt="user@example.com"
-        />
-      </div>
-
       <div className="sidebar-nav flex-fill">
         <SidebarNav />
       </div>

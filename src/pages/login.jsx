@@ -110,7 +110,7 @@ const Login = () => {
               </Col>
               <Col
                 md={5}
-                className="bg-dark text-white d-flex align-items-center justify-content-center p-5"
+                className="bg-white text-white d-flex align-items-center justify-content-center p-5"
               >
                 <div className="text-center">
                   {/* <h2>Sign up</h2>

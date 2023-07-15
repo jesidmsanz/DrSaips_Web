@@ -11,3 +11,10 @@ $enable-negative-margins: true;
 @import "~nprogress/nprogress.css";
 
 @import "_custom";
+
+.logo_left{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}

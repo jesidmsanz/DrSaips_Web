@@ -16,16 +16,26 @@ import { convertToCustomDate } from "@utils/convertToCustomDate";
 import { convertToExcel } from "@utils/jsonToExcel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
+import { formatDate } from "@utils/dates";
+
+// Obtener la fecha actual
+const currentDate = new Date();
+const currentFormattedDate = formatDate(currentDate);
+
+// Obtener la fecha de hace un mes
+const oneMonthAgoDate = new Date();
+oneMonthAgoDate.setMonth(oneMonthAgoDate.getMonth() - 1);
+const oneMonthAgoFormattedDate = formatDate(oneMonthAgoDate);
 
 const initialState = {
-  dateStart: "2015-01-01",
-  dateEnd: "2015-02-01",
+  dateStart: oneMonthAgoFormattedDate,
+  dateEnd: currentFormattedDate,
 };
 
 const Index = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(50);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(initialState);
   const [details, setDetails] = useState(null);
@@ -45,6 +55,10 @@ const Index = () => {
       setLoading(true);
       const dateStart = convertToCustomDate(form.dateStart);
       const dateEnd = convertToCustomDate(form.dateEnd);
+      console.log(
+        "`/api/bills/${dateStart}/${dateEnd}` :>> ",
+        `/api/bills/${dateStart}/${dateEnd}`
+      );
       const result = await apiUrl.get(`/api/bills/${dateStart}/${dateEnd}`);
       if (result.status === 200) {
         const { body } = result.data;
@@ -65,10 +79,10 @@ const Index = () => {
   // Calcular índices del primer y último elemento de la página actual
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
 
   // Calcular el número total de páginas
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
 
   // Generar los números de página a mostrar en la paginación
   const pageNumbers = [];
@@ -139,104 +153,103 @@ const Index = () => {
                 </Col>
               </Row>
             </Form>
-            <div className="table-responsive">
-              <table className="table border mb-0">
-                <thead className="table-light fw-semibold">
-                  <tr className="align-middle">
-                    <th>Ordinal</th>
-                    <th>Fecha Cita</th>
-                    <th>Hora Cita</th>
-                    <th>Num Doc</th>
-                    <th>Paciente</th>
-                    <th>Cod Examen</th>
-                    <th>Examen</th>
-                    <th>Opciones</th>
-                    <th aria-label="Action" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentItems.length > 0 &&
-                    currentItems.map((item) => (
-                      <>
-                        {!loading ? (
-                          <tr className="align-middle" key={item.ORDINAL}>
-                            <td>
-                              <div>{item.ORDINAL}</div>
-                            </td>
-                            <td>
-                              <div>{item.FECHA_CITA}</div>
-                            </td>
-                            <td>
-                              <div>{item.HORA_CITA}</div>
-                            </td>
-                            <td>
-                              <div>{item.NUM_DOC}</div>
-                            </td>
-                            <td>
-                              <div>{item.PACIENTE}</div>
-                            </td>
-                            <td>
-                              <div>{item.COD_EXAMEN}</div>
-                            </td>
-                            <td>
-                              <div>{item.EXAMEN}</div>
-                            </td>
-                            <td>
-                              <Button
-                                type="button"
-                                onClick={() => {
-                                  setDetails(item);
-                                  setShow(true);
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faFile} size="lg" />
-                              </Button>
-                            </td>
-                          </tr>
-                        ) : (
-                          <div className="text-center">
-                            <Spinner animation="border" role="status">
-                              <span className="visually-hidden">
-                                Loading...
-                              </span>
-                            </Spinner>
-                          </div>
-                        )}
-                      </>
-                    ))}
-                </tbody>
-              </table>
-            </div>
+            {!loading ? (
+              <>
+                <div className="table-responsive">
+                  <table className="table border mb-0">
+                    <thead className="table-light fw-semibold">
+                      <tr className="align-middle">
+                        <th>Ordinal</th>
+                        <th>Fecha Cita</th>
+                        <th>Hora Cita</th>
+                        <th>Num Doc</th>
+                        <th>Paciente</th>
+                        <th>Cod Examen</th>
+                        <th>Examen</th>
+                        <th>Opciones</th>
+                        <th aria-label="Action" />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentItems?.length > 0 &&
+                        currentItems?.map((item) => (
+                          <>
+                            <tr className="align-middle" key={item.ORDINAL}>
+                              <td>
+                                <div>{item.ORDINAL}</div>
+                              </td>
+                              <td>
+                                <div>{item.FECHA_CITA}</div>
+                              </td>
+                              <td>
+                                <div>{item.HORA_CITA}</div>
+                              </td>
+                              <td>
+                                <div>{item.NUM_DOC}</div>
+                              </td>
+                              <td>
+                                <div>{item.PACIENTE}</div>
+                              </td>
+                              <td>
+                                <div>{item.COD_EXAMEN}</div>
+                              </td>
+                              <td>
+                                <div>{item.EXAMEN}</div>
+                              </td>
+                              <td>
+                                <Button
+                                  type="button"
+                                  onClick={() => {
+                                    setDetails(item);
+                                    setShow(true);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faFile} size="lg" />
+                                </Button>
+                              </td>
+                            </tr>
+                          </>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+                <Pagination>
+                  <Pagination.Prev
+                    onClick={() =>
+                      setCurrentPage((prevPage) =>
+                        prevPage > 1 ? prevPage - 1 : prevPage
+                      )
+                    }
+                    disabled={currentPage === 1}
+                  />
+                  {pageNumbers.map((pageNumber, index) => (
+                    <Pagination.Item
+                      key={`${pageNumber}`}
+                      active={pageNumber === currentPage}
+                      onClick={() => paginate(pageNumber)}
+                    >
+                      {pageNumber}
+                    </Pagination.Item>
+                  ))}
+                  <Pagination.Next
+                    onClick={() =>
+                      setCurrentPage((prevPage) =>
+                        prevPage < totalPages ? prevPage + 1 : prevPage
+                      )
+                    }
+                    disabled={currentPage === totalPages}
+                  />
+                </Pagination>
+              </>
+            ) : (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              </div>
+            )}
           </Card.Body>
-          <Card.Footer>
-            <Pagination>
-              <Pagination.Prev
-                onClick={() =>
-                  setCurrentPage((prevPage) =>
-                    prevPage > 1 ? prevPage - 1 : prevPage
-                  )
-                }
-                disabled={currentPage === 1}
-              />
-              {pageNumbers.map((pageNumber) => (
-                <Pagination.Item
-                  key={pageNumber}
-                  active={pageNumber === currentPage}
-                  onClick={() => paginate(pageNumber)}
-                >
-                  {pageNumber}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                onClick={() =>
-                  setCurrentPage((prevPage) =>
-                    prevPage < totalPages ? prevPage + 1 : prevPage
-                  )
-                }
-                disabled={currentPage === totalPages}
-              />
-            </Pagination>
-          </Card.Footer>
+          <Card.Footer></Card.Footer>
         </Card>
       </AdminLayout>
       <Modal show={show} onHide={handleClose} centered size="lg">
