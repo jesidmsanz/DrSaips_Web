@@ -1,3 +1,5 @@
+import { credentialsOracleDb } from "./db/conectection";
+
 const OracleDB = require("oracledb");
 
 export const getDataOfOracle = async (query) => {
@@ -8,34 +10,20 @@ export const getDataOfOracle = async (query) => {
       OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
       // OracleDB.initOracleClient({ libDir: "/var/www/html/websites/DrSaips_Web/instantclient_21_10" });
 
-      const connection = await OracleDB.getConnection({
-        user: process.env.USER,
-        password: process.env.PASS,
-        connectString:
-          "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = pirasoft.top)(PORT = 1521))(CONNECT_DATA =(SID= xe)))",
-        externalAuth: false,
-      });
+      const connection = await OracleDB.getConnection(credentialsOracleDb);
 
-      const result = await connection.execute(query, [], { resultSet: true });
+      const result = await connection.execute(query, [], {
+        resultSet: true,
+        outFormat: OracleDB.OUT_FORMAT_OBJECT,
+      });
 
       const resultSet = result.resultSet;
-      const rows = await resultSet.getRows(); // Obtener todas las filas
-
-      const columnNames = result.metaData.map((column) => column.name);
-      const jsonData = rows.map((row) => {
-        const obj = {};
-        columnNames.forEach((columnName, index) => {
-          obj[columnName] = row[index];
-        });
-        return obj;
-      });
-
-      console.log("jsonData.length", jsonData.length);
+      const rows = await resultSet.getRows();
 
       await resultSet.close();
       await connection.close();
 
-      return jsonData;
+      return rows;
     }
     return null;
   } catch (error) {
