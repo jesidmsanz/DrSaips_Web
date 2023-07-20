@@ -10,7 +10,10 @@ export default function ViewForm({ form, show, handleClose }) {
       size="xl"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header
+        closeButton
+        style={{ backgroundColor: "#051F34", color: "white" }}
+      >
         <Modal.Title>{form.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>

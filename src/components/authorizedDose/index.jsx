@@ -13,6 +13,7 @@ export default function AuthorizedDose() {
   const [formUpdateData, setFormUpdateData] = useState(null);
   const [data, setData] = useState(null);
   const [show, setShow] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -25,13 +26,20 @@ export default function AuthorizedDose() {
     setFormUpdateData({ ...formUpdateData, [e.target.id]: e.target.value });
   };
 
-  const loadData = async () => {
+  const loadData = async (e) => {
     try {
+      e?.preventDefault();
+      setSearching(true);
       const citeDate = convertToCustomDate(form.citeDate);
       const result = await apiUrl.get(
         `/api/authorized_dose/${form.numberDocument}/${citeDate}`
       );
-      if (result.status === 200) setData(result.data.body);
+      if (result.status === 200 && result.data.body.length > 0) {
+        setData(result.data.body);
+      } else {
+        setData(null);
+      }
+      setSearching(false);
     } catch (error) {
       console.log("error", error);
     }
@@ -45,6 +53,10 @@ export default function AuthorizedDose() {
           `/api/authorized_dose/${formUpdateData?.ORDINAL}`,
           { DOSIS_AUTORIZADA: formUpdateData?.NEW_DOSIS_AUTORIZADA }
         );
+        if (update.status === 200) {
+          loadData();
+          handleClose();
+        }
         console.log("update :>> ", update);
       }
     } catch (error) {
@@ -54,7 +66,7 @@ export default function AuthorizedDose() {
 
   return (
     <>
-      <Form>
+      <Form onSubmit={loadData}>
         <Row>
           <Col sm={6}>
             <Form.Group className="mb-3">
@@ -65,6 +77,7 @@ export default function AuthorizedDose() {
                 onChange={handleChange}
                 value={form.numberDocument}
                 placeholder="Numero de documento"
+                required
               />
             </Form.Group>
           </Col>
@@ -77,14 +90,18 @@ export default function AuthorizedDose() {
                 onChange={handleChange}
                 value={form.citeDate}
                 placeholder="Numero de documento"
+                required
               />
             </Form.Group>
           </Col>
         </Row>
-
-        <Button onClick={loadData}>Consultar</Button>
+        <div className="d-flex justify-content-end mb-4 mt-4">
+          <Button type="submit">
+            {searching ? "Consultando..." : "Consultar"}
+          </Button>
+        </div>
       </Form>
-      {data && (
+      {data && data.length > 0 ? (
         <>
           <Table striped bordered hover size="sm" className="mt-4">
             <thead>
@@ -124,10 +141,13 @@ export default function AuthorizedDose() {
             </tbody>
           </Table>
           <Modal show={show} onHide={handleClose} centered>
-            <Modal.Header closeButton>
+            <Modal.Header
+              style={{ backgroundColor: "#051F34", color: "white" }}
+              closeButton
+            >
               <Modal.Title>Actualizar Dosis Autorizada</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{ backgroundColor: "#e3e3e36b" }}>
               <Form>
                 <Row>
                   <Col sm={6}>
@@ -150,19 +170,24 @@ export default function AuthorizedDose() {
                         onChange={handleChangeUpdateData}
                         value={formUpdateData?.NEW_DOSIS_AUTORIZADA}
                         placeholder="Nueva Dosis Autorizada"
+                        inputMode="numeric"
                       />
                     </Form.Group>
                   </Col>
                 </Row>
               </Form>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={{ backgroundColor: "#e3e3e36b" }}>
               <Button variant="primary" onClick={handleSubmit}>
                 Actualizar
               </Button>
             </Modal.Footer>
           </Modal>
         </>
+      ) : (
+        <div className="d-flex justify-content-center mb-4 mt-4">
+          <strong>No se encontraron resultados.</strong>
+        </div>
       )}
     </>
   );

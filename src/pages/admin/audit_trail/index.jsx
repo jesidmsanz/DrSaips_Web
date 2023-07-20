@@ -15,20 +15,19 @@ import { apiUrl } from "@utils/axiosConfig";
 import AuthorizedDose from "../../../components/authorizedDose";
 import ViewForm from "./viewForm";
 
-const data = [
-  {
-    title: "Edición: Dosis Autorizada",
-    component: <AuthorizedDose />,
-    message: "Digite número de documento del paciente y fecha de la cita:",
-    textButton: "Consultar",
-  },
-  { title: "Edición: Eluciones", component: null },
-  { title: "Edición: Generador", component: null },
-];
-
 export default function index() {
   const [show, setShow] = useState(false);
   const [form, setForm] = useState(null);
+  const [data, setData] = useState([
+    {
+      title: "Edición: Dosis Autorizada",
+      component: <AuthorizedDose />,
+      message: "Digite número de documento del paciente y fecha de la cita:",
+      textButton: "Consultar",
+    },
+    { title: "Edición: Eluciones", component: null },
+    { title: "Edición: Generador", component: null },
+  ]);
 
   const handleClose = () => {
     setShow(!show);

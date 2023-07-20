@@ -12,17 +12,25 @@ $enable-negative-margins: true;
 
 @import "_custom";
 
-.logo_left{
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 3rem;
+.logo_left {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
 
 .button {
-    width: 15rem !important;
-    height: 10rem !important;
-    font-size: 1.7rem !important;
-    border-radius: 8% !important;
-    margin: 0 2rem 2rem 0
+  width: 15rem !important;
+  height: 10rem !important;
+  font-size: 1.7rem !important;
+  border-radius: 8% !important;
+  margin: 0 2rem 2rem 0;
+}
+
+.modal-header .btn-close {
+  background-color: aliceblue !important;
+}
+
+.modal-content {
+  border: 1px solid !important;
 }
