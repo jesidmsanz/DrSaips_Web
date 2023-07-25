@@ -5,12 +5,12 @@ import baseHandler from "@server/network/baseHandler";
 import { getDataOfOracle } from "../../getDataOfOracle";
 
 const router = Router();
-const apiURL = "/api/authorized_dose";
+const apiURL = "/api/generator";
 
-// GET: api/authorized_dose/:numberDocument/:citeDate
+// GET: api/generator/:numberDocument/:citeDate
 router.get(`${apiURL}/:numberDocument/:citeDate`, async function (req, res) {
   try {
-    console.log("api/authorized_dose/");
+    console.log("api/generator/");
     const result = await controller.findAllByAuthorizedDose(
       req.params.numberDocument,
       req.params.citeDate
@@ -19,22 +19,23 @@ router.get(`${apiURL}/:numberDocument/:citeDate`, async function (req, res) {
     res.json({ message: "Success", body: result });
   } catch (error) {
     console.log("ERROR: ", error);
-    res.status(400).json({ message: "Error on authorized_dose", error });
+    res.status(400).json({ message: "Error on generator", error });
   }
 });
 
-// PUT: api/authorized_dose/:ordinal
+// PUT: api/generator/:ordinal
 router.put(`${apiURL}/:ordinal`, async function (req, res) {
   try {
+    const { DOSIS_AUTORIZADA } = req.body;
     const result = await controller.updateByAuthorizedDose(
       req.params.ordinal,
-      req.body
+      DOSIS_AUTORIZADA
     );
 
     res.json({ message: "Success", body: result });
   } catch (error) {
     console.log("ERROR: ", error);
-    res.status(400).json({ message: "Error on authorized_dose", error });
+    res.status(400).json({ message: "Error on generator", error });
   }
 });
 

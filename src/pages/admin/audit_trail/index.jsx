@@ -12,27 +12,45 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { apiUrl } from "@utils/axiosConfig";
-import AuthorizedDose from "../../../components/authorizedDose";
+import AuthorizedDose from "../../../components/authorizedDoseForm";
 import ViewForm from "./viewForm";
+import ElucionesForm from "../../../components/elucionesForm";
+import GeneratorForm from "../../../components/generatorForm";
+import { useSession } from "next-auth/react";
 
 export default function index() {
   const [show, setShow] = useState(false);
   const [form, setForm] = useState(null);
-  const [data, setData] = useState([
+  const [user, setUser] = useState({ name: "" });
+  const { data: session, status } = useSession();
+  const data = [
     {
       title: "Edición: Dosis Autorizada",
-      component: <AuthorizedDose />,
-      message: "Digite número de documento del paciente y fecha de la cita:",
+      component: <AuthorizedDose user={user} />,
+      message: "Digite número de documento del Paciente y fecha de la cita:",
       textButton: "Consultar",
     },
-    { title: "Edición: Eluciones", component: null },
-    { title: "Edición: Generador", component: null },
-  ]);
+    {
+      title: "Edición: Eluciones",
+      component: <ElucionesForm user={user} />,
+      textButton: "Consultar",
+      message: "Digite número de documento del Paciente y fecha de la cita:",
+    },
+    {
+      title: "Edición: Generador",
+      component: <GeneratorForm user={user} />,
+      textButton: "Consultar",
+    },
+  ];
 
   const handleClose = () => {
     setShow(!show);
     setForm(null);
   };
+
+  useEffect(() => {
+    if (session?.user) setUser(session.user);
+  }, [session]);
 
   return (
     <>

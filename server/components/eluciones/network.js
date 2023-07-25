@@ -5,13 +5,13 @@ import baseHandler from "@server/network/baseHandler";
 import { getDataOfOracle } from "../../getDataOfOracle";
 
 const router = Router();
-const apiURL = "/api/authorized_dose";
+const apiURL = "/api/eluciones";
 
-// GET: api/authorized_dose/:numberDocument/:citeDate
+// GET: api/eluciones/:numberDocument/:citeDate
 router.get(`${apiURL}/:numberDocument/:citeDate`, async function (req, res) {
   try {
-    console.log("api/authorized_dose/");
-    const result = await controller.findAllByAuthorizedDose(
+    console.log("api/eluciones/");
+    const result = await controller.findAllByEluciones(
       req.params.numberDocument,
       req.params.citeDate
     );
@@ -19,14 +19,14 @@ router.get(`${apiURL}/:numberDocument/:citeDate`, async function (req, res) {
     res.json({ message: "Success", body: result });
   } catch (error) {
     console.log("ERROR: ", error);
-    res.status(400).json({ message: "Error on authorized_dose", error });
+    res.status(400).json({ message: "Error on eluciones", error });
   }
 });
 
-// PUT: api/authorized_dose/:ordinal
+// PUT: api/eluciones/:ordinal
 router.put(`${apiURL}/:ordinal`, async function (req, res) {
   try {
-    const result = await controller.updateByAuthorizedDose(
+    const result = await controller.updateByEluciones(
       req.params.ordinal,
       req.body
     );
@@ -34,7 +34,7 @@ router.put(`${apiURL}/:ordinal`, async function (req, res) {
     res.json({ message: "Success", body: result });
   } catch (error) {
     console.log("ERROR: ", error);
-    res.status(400).json({ message: "Error on authorized_dose", error });
+    res.status(400).json({ message: "Error on eluciones", error });
   }
 });
 

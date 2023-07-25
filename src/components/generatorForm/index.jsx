@@ -8,7 +8,7 @@ const initialState = {
   citeDate: "",
 };
 
-export default function AuthorizedDose() {
+export default function GeneratorForm() {
   const [form, setForm] = useState(initialState);
   const [formUpdateData, setFormUpdateData] = useState(null);
   const [data, setData] = useState(null);
@@ -32,7 +32,7 @@ export default function AuthorizedDose() {
       setSearching(true);
       const citeDate = convertToCustomDate(form.citeDate);
       const result = await apiUrl.get(
-        `/api/authorized_dose/${form.numberDocument}/${citeDate}`
+        `/api/eluciones/${form.numberDocument}/${citeDate}`
       );
       if (result.status === 200 && result.data.body.length > 0) {
         setData(result.data.body);
@@ -47,17 +47,15 @@ export default function AuthorizedDose() {
 
   const handleSubmit = async (e) => {
     try {
-      console.log("UPDATE :>> ");
       if (formUpdateData) {
         const update = await apiUrl.put(
-          `/api/authorized_dose/${formUpdateData?.ORDINAL}`,
+          `/api/eluciones/${formUpdateData?.ORDINAL}`,
           { DOSIS_AUTORIZADA: formUpdateData?.NEW_DOSIS_AUTORIZADA }
         );
         if (update.status === 200) {
           loadData();
           handleClose();
         }
-        console.log("update :>> ", update);
       }
     } catch (error) {
       console.log("error :>> ", error);
@@ -107,7 +105,7 @@ export default function AuthorizedDose() {
             <thead>
               <tr>
                 <th>Numero documento</th>
-                <th>paciente</th>
+                <th>Paciente</th>
                 <th>Cod Examen</th>
                 <th>Examen</th>
                 <th>Fecha cita</th>
