@@ -4,8 +4,7 @@ import { apiUrl } from "@utils/axiosConfig";
 import { convertToCustomDate } from "@utils/convertToCustomDate";
 
 const initialState = {
-  numberDocument: "",
-  citeDate: "",
+  NRO_GENERADOR: "",
 };
 
 export default function GeneratorForm() {
@@ -30,10 +29,8 @@ export default function GeneratorForm() {
     try {
       e?.preventDefault();
       setSearching(true);
-      const citeDate = convertToCustomDate(form.citeDate);
-      const result = await apiUrl.get(
-        `/api/eluciones/${form.numberDocument}/${citeDate}`
-      );
+      console.log("form.NRO_GENERADOR", form.NRO_GENERADOR);
+      const result = await apiUrl.get(`/api/generator/${form.NRO_GENERADOR}`);
       if (result.status === 200 && result.data.body.length > 0) {
         setData(result.data.body);
       } else {
@@ -49,8 +46,8 @@ export default function GeneratorForm() {
     try {
       if (formUpdateData) {
         const update = await apiUrl.put(
-          `/api/eluciones/${formUpdateData?.ORDINAL}`,
-          { DOSIS_AUTORIZADA: formUpdateData?.NEW_DOSIS_AUTORIZADA }
+          `/api/generator/${formUpdateData?.ORD_GEN}`,
+          formUpdateData
         );
         if (update.status === 200) {
           loadData();
@@ -66,28 +63,15 @@ export default function GeneratorForm() {
     <>
       <Form onSubmit={loadData}>
         <Row>
-          <Col sm={6}>
+          <Col sm={12}>
             <Form.Group className="mb-3">
-              <Form.Label>No. Documento</Form.Label>
+              <Form.Label>No. Generador</Form.Label>
               <Form.Control
                 type="number"
-                id="numberDocument"
+                id="NRO_GENERADOR"
                 onChange={handleChange}
-                value={form.numberDocument}
-                placeholder="Numero de documento"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col sm={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Fecha cita</Form.Label>
-              <Form.Control
-                type="date"
-                id="citeDate"
-                onChange={handleChange}
-                value={form.citeDate}
-                placeholder="Numero de documento"
+                value={form.NRO_GENERADOR}
+                placeholder="Numero de generador"
                 required
               />
             </Form.Group>
@@ -104,35 +88,34 @@ export default function GeneratorForm() {
           <Table striped bordered hover size="sm" className="mt-4">
             <thead>
               <tr>
-                <th>Numero documento</th>
-                <th>Paciente</th>
-                <th>Cod Examen</th>
-                <th>Examen</th>
-                <th>Fecha cita</th>
-                <th>Hora cita</th>
-                <th>Dosis autorizada</th>
+                <th>No Generador</th>
+                <th>Actividad</th>
+                <th>Fecha De Recepción</th>
+                <th>Fecha De Salida</th>
+                <th>Med Bult</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{data[0].NUM_DOC}</td>
-                <td>{data[0].PACIENTE}</td>
-                <td>{data[0].COD_EXAMEN}</td>
-                <td>{data[0].EXAMEN}</td>
-                <td>{data[0].FECHA_CITA.split("T")[0]}</td>
-                <td>{data[0].HORA_CITA}</td>
-                <td>{data[0].DOSIS_AUTORIZADA}</td>
-                <td>
+                <td>{data[0]?.NRO_GENERADOR}</td>
+                <td>{data[0]?.ACTIVIDAD}</td>
+                <td>{data[0]?.FEC_RECEPCION.split("T")[0]}</td>
+                <td>{data[0]?.FEC_SALIDA.split("T")[0]}</td>
+                <td>{data[0]?.MED_BULT}</td>
+                <td className="text-center">
                   <Button
                     variant="primary"
                     size="sm"
                     onClick={() => {
                       handleShow();
-                      setFormUpdateData(data[0]);
+                      setFormUpdateData({
+                        ...data[0],
+                        ACTIVIDAD: parseInt(data[0].ACTIVIDAD),
+                      });
                     }}
                   >
-                    Cambiar Dosis
+                    Actualizar Registros
                   </Button>
                 </td>
               </tr>
@@ -143,32 +126,131 @@ export default function GeneratorForm() {
               style={{ backgroundColor: "#051F34", color: "white" }}
               closeButton
             >
-              <Modal.Title>Actualizar Dosis Autorizada</Modal.Title>
+              <Modal.Title>Actualizar Registros</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ backgroundColor: "#e3e3e36b" }}>
               <Form>
                 <Row>
                   <Col sm={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Dosis Autorizada</Form.Label>
+                      <Form.Label>No Generador</Form.Label>
                       <Form.Control
                         type="text"
-                        id="DOSIS_AUTORIZADA"
+                        id="NRO_GENERADOR"
                         onChange={handleChangeUpdateData}
-                        value={formUpdateData?.DOSIS_AUTORIZADA}
+                        value={formUpdateData?.NRO_GENERADOR}
+                        disabled
                       />
                     </Form.Group>
                   </Col>
                   <Col sm={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Nueva Dosis Autorizada</Form.Label>
+                      <Form.Label>Nuevo No Generador</Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="NEW_NRO_GENERADOR"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.NEW_NRO_GENERADOR}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Actividad</Form.Label>
                       <Form.Control
                         type="number"
-                        id="NEW_DOSIS_AUTORIZADA"
+                        id="ACTIVIDAD"
                         onChange={handleChangeUpdateData}
-                        value={formUpdateData?.NEW_DOSIS_AUTORIZADA}
-                        placeholder="Nueva Dosis Autorizada"
-                        inputMode="numeric"
+                        value={formUpdateData?.ACTIVIDAD}
+                        disabled
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nueva Actividad</Form.Label>
+                      <Form.Control
+                        type="number"
+                        id="NEW_ACTIVIDAD"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.NEW_ACTIVIDAD}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Fecha Recepción</Form.Label>
+                      <Form.Control
+                        type="date"
+                        id="FEC_RECEPCION"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.FEC_RECEPCION.split("T")[0]}
+                        disabled
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nueva Fecha Recepción</Form.Label>
+                      <Form.Control
+                        type="date"
+                        id="NEW_FEC_RECEPCION"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.NEW_FEC_RECEPCION}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Fecha Salida</Form.Label>
+                      <Form.Control
+                        type="date"
+                        id="FEC_SALIDA"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.FEC_SALIDA.split("T")[0]}
+                        disabled
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nueva Fecha Salida</Form.Label>
+                      <Form.Control
+                        type="date"
+                        id="NEW_FEC_SALIDA"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.NEW_FEC_SALIDA}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Med Buld</Form.Label>
+                      <Form.Control
+                        type="number"
+                        id="MED_BULT"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.MED_BULT}
+                        disabled
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col sm={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nuevo Med Buld</Form.Label>
+                      <Form.Control
+                        type="number"
+                        id="NEW_MED_BULT"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.NEW_MED_BULT}
                       />
                     </Form.Group>
                   </Col>

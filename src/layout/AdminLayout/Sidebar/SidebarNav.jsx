@@ -2,7 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronUp,
   faNoteSticky,
-  faRightToBracket,
+  faGear,
+  faMagicWandSparkles,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import React, {
   PropsWithChildren,
@@ -27,7 +29,7 @@ const SidebarNavItem = (props) => {
   return (
     <Nav.Item>
       <Link href={href} passHref legacyBehavior>
-        <Nav.Link className="px-3 py-2 d-flex align-items-center">
+        <Nav.Link className="px-3 py-2 d-flex align-items-center item_nav">
           {icon ? (
             <FontAwesomeIcon className="nav-icon ms-n3" icon={icon} />
           ) : (
@@ -126,13 +128,13 @@ export default function SidebarNav() {
         />
       </div>
       {/* <SidebarNavTitle>Menu</SidebarNavTitle> */}
-      <SidebarNavItem icon={faNoteSticky} href="/admin/audit_trail">
+      <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
         Audit Trail
       </SidebarNavItem>
       <SidebarNavItem icon={faNoteSticky} href="#">
         Reportes
       </SidebarNavItem>
-      <SidebarNavItem icon={faNoteSticky} href="#">
+      <SidebarNavItem icon={faGear} href="#">
         Configuración
       </SidebarNavItem>
     </ul>

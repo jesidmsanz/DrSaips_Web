@@ -1,4 +1,4 @@
-$sidebar-background: #051f34;
+$sidebar-background: #0A2647;
 $sidebar-text-color: rgba(255, 255, 255, 0.6);
 $sidebar-brand-height: 4rem;
 $sidebar-brand-background: rgba(0, 0, 21, 0.2);
@@ -15,7 +15,7 @@ $sidebar-z-index: $zindex-fixed; // Default 1030
 $sidebar-overlay-z-index: 1025;
 
 :root {
-  --sidebar-width: 16rem;
+  --sidebar-width: 20rem;
 }
 
 .sidebar {

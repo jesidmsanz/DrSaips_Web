@@ -25,6 +25,11 @@ $enable-negative-margins: true;
   font-size: 1.7rem !important;
   border-radius: 8% !important;
   margin: 0 2rem 2rem 0;
+
+  box-shadow: 0px 2px 4px rgb(66, 66, 66);
+  background-color: rgb(225 225 225);
+  border: none;
+  color: rgb(0, 0, 0);
 }
 
 .modal-header .btn-close {
@@ -33,4 +38,16 @@ $enable-negative-margins: true;
 
 .modal-content {
   border: 1px solid !important;
+}
+
+//NAV
+.item_nav {
+  font-size: 19px;
+  color: white;
+}
+
+.card_body_audit {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
 }

@@ -7,13 +7,12 @@ import { getDataOfOracle } from "../../getDataOfOracle";
 const router = Router();
 const apiURL = "/api/generator";
 
-// GET: api/generator/:numberDocument/:citeDate
-router.get(`${apiURL}/:numberDocument/:citeDate`, async function (req, res) {
+// GET: api/generator/:NRO_GENERADOR
+router.get(`${apiURL}/:NRO_GENERADOR`, async function (req, res) {
   try {
-    console.log("api/generator/");
-    const result = await controller.findAllByAuthorizedDose(
-      req.params.numberDocument,
-      req.params.citeDate
+    console.log("api/generator/", req.params.NRO_GENERADOR);
+    const result = await controller.findAllByNoGenerator(
+      req.params.NRO_GENERADOR
     );
 
     res.json({ message: "Success", body: result });
@@ -23,13 +22,12 @@ router.get(`${apiURL}/:numberDocument/:citeDate`, async function (req, res) {
   }
 });
 
-// PUT: api/generator/:ordinal
-router.put(`${apiURL}/:ordinal`, async function (req, res) {
+// PUT: api/generator/:MED_BULT
+router.put(`${apiURL}/:ORD_GEN`, async function (req, res) {
   try {
-    const { DOSIS_AUTORIZADA } = req.body;
-    const result = await controller.updateByAuthorizedDose(
-      req.params.ordinal,
-      DOSIS_AUTORIZADA
+    const result = await controller.updateByNoGenerator(
+      req.params.ORD_GEN,
+      req.body
     );
 
     res.json({ message: "Success", body: result });
