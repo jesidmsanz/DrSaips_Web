@@ -102,7 +102,11 @@ export default function GeneratorForm({ user }) {
                 <td>{data[0]?.ACTIVIDAD}</td>
                 <td>{data[0]?.FEC_RECEPCION.split("T")[0]}</td>
                 <td>{data[0]?.FEC_SALIDA.split("T")[0]}</td>
-                <td>{data[0]?.MED_BULT}</td>
+                <td>
+                  {data[0]?.MED_BULT
+                    ? parseFloat(data[0]?.MED_BULT).toFixed(1)
+                    : ""}
+                </td>
                 <td className="text-center">
                   <Button
                     variant="primary"
