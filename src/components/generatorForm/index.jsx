@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
 import { apiUrl } from "@utils/axiosConfig";
 import { convertToCustomDate } from "@utils/convertToCustomDate";
-import formatNumberWithDecimals from "../../../utils/formatNumberWithDecimals";
 
 const initialState = {
   NRO_GENERADOR: "",
@@ -105,7 +104,7 @@ export default function GeneratorForm({ user }) {
                 <td>{data[0]?.FEC_SALIDA.split("T")[0]}</td>
                 <td>
                   {data[0]?.MED_BULT
-                    ? formatNumberWithDecimals(data[0]?.MED_BULT)
+                    ? parseFloat(data[0]?.MED_BULT).toFixed(1)
                     : ""}
                 </td>
                 <td className="text-center">
