@@ -19,13 +19,14 @@ async function updateByNoGenerator(ORD_GEN, data) {
       FEC_RECEPCION,
       FEC_SALIDA,
       MED_BULT,
+      OBSERVACION,
       NEW_NRO_GENERADOR,
       NEW_ACTIVIDAD,
       NEW_FEC_RECEPCION,
       NEW_FEC_SALIDA,
       NEW_MED_BULT,
+      user,
     } = data;
-    console.log("data :>> ", data);
     OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
     const connection = await OracleDB.getConnection(credentialsOracleDb);
 
@@ -45,6 +46,73 @@ async function updateByNoGenerator(ORD_GEN, data) {
       outFormat: OracleDB.OUT_FORMAT_OBJECT,
       autoCommit: true,
     });
+
+    const generateQuery = (registro_actualizado, oldValue, newValue) => {
+      const query = `INSERT INTO AUDIT_TRAIL_LOGS (id_parametro, fecha_registro, id_paciente, fecha_cita, 
+        hora_cita, cod_Examen, nombre_examen, usuario, registro_actualizado, valor_anterior, valor_nuevo, observaciones)
+  VALUES (3, SYSDATE, null,null, null, null, null, '${
+    user || ""
+  }', '${registro_actualizado}', '${oldValue || ""}', '${newValue || ""}', '${
+        OBSERVACION || " "
+      }')`;
+      return query;
+    };
+
+    const loadSearch = async (query) => {
+      try {
+        await connection.execute(query, [], {
+          outFormat: OracleDB.OUT_FORMAT_OBJECT,
+          autoCommit: true,
+        });
+      } catch (error) {
+        console.log("error loadSearch:>> ", error);
+      }
+    };
+
+    if (NEW_NRO_GENERADOR) {
+      const query = generateQuery(
+        "NRO_GENERADOR",
+        NRO_GENERADOR,
+        NEW_NRO_GENERADOR
+      );
+      await loadSearch(query);
+    }
+
+    if (NEW_ACTIVIDAD) {
+      const query = generateQuery("ACTIVIDAD", ACTIVIDAD, NEW_ACTIVIDAD);
+      await loadSearch(query);
+    }
+
+    if (NEW_FEC_RECEPCION) {
+      const query = `INSERT INTO AUDIT_TRAIL_LOGS (id_parametro, fecha_registro, id_paciente, fecha_cita, 
+        hora_cita, cod_Examen, nombre_examen, usuario, registro_actualizado, valor_anterior, valor_nuevo, observaciones)
+  VALUES (3, SYSDATE, null,null, null, null, null, '${
+    user || ""
+  }', 'FEC_RECEPCION', '${convertToCustomDate(
+        FEC_RECEPCION.split("T")[0]
+      )}', '${convertToCustomDate(NEW_FEC_RECEPCION.split("T")[0])}', '${
+        OBSERVACION || " "
+      }')`;
+      await loadSearch(query);
+    }
+
+    if (NEW_FEC_SALIDA) {
+      const query = `INSERT INTO AUDIT_TRAIL_LOGS (id_parametro, fecha_registro, id_paciente, fecha_cita, 
+        hora_cita, cod_Examen, nombre_examen, usuario, registro_actualizado, valor_anterior, valor_nuevo, observaciones)
+  VALUES (3, SYSDATE, null,null, null, null, null, '${
+    user || ""
+  }', 'FEC_SALIDA', '${convertToCustomDate(
+        FEC_SALIDA.split("T")[0]
+      )}', '${convertToCustomDate(NEW_FEC_SALIDA.split("T")[0])}', '${
+        OBSERVACION || " "
+      }')`;
+      await loadSearch(query);
+    }
+
+    if (NEW_MED_BULT) {
+      const query = generateQuery("MED_BULT", MED_BULT, NEW_MED_BULT);
+      await loadSearch(query);
+    }
 
     resolve(search);
   });

@@ -1,3 +1,4 @@
+import { convertToCustomDate } from "../../../utils/convertToCustomDate";
 import { credentialsOracleDb } from "../../db/conectection";
 import { getDataOfOracle } from "../../getDataOfOracle";
 const OracleDB = require("oracledb");
@@ -41,12 +42,13 @@ async function updateByEluciones(ordinal, data) {
 
     const insertLog = async (field, oldValue, newValue) => {
       try {
+        const date = convertToCustomDate(FECHA_CITA.split("T")[0]);
         const query = `INSERT INTO AUDIT_TRAIL_LOGS (id_parametro, fecha_registro, id_paciente, fecha_cita, 
             hora_cita, cod_Examen, nombre_examen, usuario, registro_actualizado, valor_anterior, valor_nuevo, observaciones)
-      VALUES (2, SYSDATE, '${NUM_DOC}', '${FECHA_CITA}', '${HORA_CITA}', '${COD_EXAMEN}', '${EXAMEN}', '${
+      VALUES (2, SYSDATE, '${NUM_DOC}', TO_DATE('${date}', 'dd/mm/yy'), '${HORA_CITA}', '${COD_EXAMEN}', '${EXAMEN}', '${
           user || ""
         }', '${field}', 
-      '${oldValue}', '${newValue}', '${OBSERVACION || "Sin Observación"}')`;
+      '${oldValue}', '${newValue}', '${OBSERVACION || " "}')`;
         const search = await connection.execute(query, [], {
           outFormat: OracleDB.OUT_FORMAT_OBJECT,
           autoCommit: true,
@@ -62,7 +64,7 @@ async function updateByEluciones(ordinal, data) {
         `Update citas set volumen = ${NEW_VOLUMEN} where ordinal = ${num_ordinal}`
       );
       if (insert.rowsAffected === 1) {
-        await insertLog("volumen", VOLUMEN, NEW_VOLUMEN);
+        await insertLog("VOLUMEN", VOLUMEN, NEW_VOLUMEN);
       }
       result.push({ updateVolumen: insert });
     }
@@ -72,7 +74,7 @@ async function updateByEluciones(ordinal, data) {
         `Update citas set Activ_eluc = ${NEW_ACTIVIDAD} where ordinal = ${num_ordinal}`
       );
       if (insert.rowsAffected === 1) {
-        await insertLog("Activ_eluc", ACTIVIDAD, NEW_ACTIVIDAD);
+        await insertLog("ACTIV_ELUC", ACTIVIDAD, NEW_ACTIVIDAD);
       }
       result.push({ updateActividad: insert });
     }

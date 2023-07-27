@@ -51,3 +51,22 @@ $enable-negative-margins: true;
   justify-content: center;
   padding: 2rem;
 }
+
+.form_logs {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.block1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonGroup {
+  margin-bottom: 2.5rem !important;
+}
+
+.form_group_logs {
+  margin-right: 20px !important;
+}

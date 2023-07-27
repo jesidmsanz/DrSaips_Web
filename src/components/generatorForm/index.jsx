@@ -7,7 +7,7 @@ const initialState = {
   NRO_GENERADOR: "",
 };
 
-export default function GeneratorForm() {
+export default function GeneratorForm({ user }) {
   const [form, setForm] = useState(initialState);
   const [formUpdateData, setFormUpdateData] = useState(null);
   const [data, setData] = useState(null);
@@ -47,7 +47,7 @@ export default function GeneratorForm() {
       if (formUpdateData) {
         const update = await apiUrl.put(
           `/api/generator/${formUpdateData?.ORD_GEN}`,
-          formUpdateData
+          { ...formUpdateData, user: user?.name || "" }
         );
         if (update.status === 200) {
           loadData();
@@ -251,6 +251,21 @@ export default function GeneratorForm() {
                         id="NEW_MED_BULT"
                         onChange={handleChangeUpdateData}
                         value={formUpdateData?.NEW_MED_BULT}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={12}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Observación</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        id="OBSERVACION"
+                        onChange={handleChangeUpdateData}
+                        value={formUpdateData?.OBSERVACION}
+                        placeholder="Observación"
+                        rows={4}
                       />
                     </Form.Group>
                   </Col>

@@ -1,3 +1,4 @@
+import { convertToCustomDate } from "../../../utils/convertToCustomDate";
 import { credentialsOracleDb } from "../../db/conectection";
 import { getDataOfOracle } from "../../getDataOfOracle";
 const OracleDB = require("oracledb");
@@ -23,7 +24,6 @@ async function updateByAuthorizedDose(ordinal, data) {
       OBSERVACION,
       user,
     } = data;
-    console.log("data", data);
     OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
     const connection = await OracleDB.getConnection(credentialsOracleDb);
 
@@ -35,21 +35,19 @@ async function updateByAuthorizedDose(ordinal, data) {
     });
 
     if (search?.rowsAffected === 1) {
+      const date = convertToCustomDate(FECHA_CITA.split("T")[0]);
       const query = `INSERT INTO AUDIT_TRAIL_LOGS (id_parametro, fecha_registro, id_paciente, fecha_cita, 
         hora_cita, cod_Examen, nombre_examen, usuario, registro_actualizado, valor_anterior, valor_nuevo, observaciones)
-  VALUES (1, SYSDATE, '${NUM_DOC}', '${FECHA_CITA}', '${HORA_CITA}', '${COD_EXAMEN}', '${EXAMEN}', '${
+  VALUES (1, SYSDATE, '${NUM_DOC}', TO_DATE('${date}', 'dd/mm/yy'), '${HORA_CITA}', '${COD_EXAMEN}', '${EXAMEN}', '${
         user || ""
       }', 'DOSIS_AUTORIZADA', 
   '${DOSIS_AUTORIZADA.replace(" mCi", "")}', '${NEW_DOSIS_AUTORIZADA}', '${
-        OBSERVACION || "Sin Observación"
+        OBSERVACION || " "
       }')`;
-
-      console.log("query", query);
       const search = await connection.execute(query, [], {
         outFormat: OracleDB.OUT_FORMAT_OBJECT,
         autoCommit: true,
       });
-      console.log("search", search);
     }
 
     resolve(search);

@@ -17,11 +17,13 @@ import ViewForm from "./viewForm";
 import ElucionesForm from "../../../components/elucionesForm";
 import GeneratorForm from "../../../components/generatorForm";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function index() {
   const [show, setShow] = useState(false);
   const [form, setForm] = useState(null);
   const [user, setUser] = useState({ name: "" });
+  const route = useRouter();
   const { data: session, status } = useSession();
   const data = [
     {
@@ -48,6 +50,7 @@ export default function index() {
       title: "Logs",
       component: null,
       textButton: "Consultar",
+      href: "/admin/logs",
       style: { backgroundColor: "#2C74B3", border: "none", color: "#FFF" },
     },
   ];
@@ -70,8 +73,12 @@ export default function index() {
               className="button"
               style={item.style}
               onClick={() => {
-                setForm(item);
-                setShow(true);
+                if (!item.href) {
+                  setForm(item);
+                  setShow(true);
+                } else {
+                  route.push(item.href);
+                }
               }}
               key={item.title}
             >
