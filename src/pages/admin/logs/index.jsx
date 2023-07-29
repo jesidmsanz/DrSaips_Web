@@ -162,7 +162,7 @@ const Logs = () => {
                       variant="success"
                       style={{ marginTop: "30px" }}
                     >
-                      Exportar a Excel
+                      Exp Excel
                     </Button>
                   </ButtonGroup>
                 </div>

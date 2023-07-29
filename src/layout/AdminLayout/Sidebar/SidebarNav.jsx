@@ -131,12 +131,12 @@ export default function SidebarNav() {
       <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
         Audit Trail
       </SidebarNavItem>
-      <SidebarNavItem icon={faNoteSticky} href="#">
+      {/* <SidebarNavItem icon={faNoteSticky} href="#">
         Reportes
       </SidebarNavItem>
       <SidebarNavItem icon={faGear} href="#">
         Configuración
-      </SidebarNavItem>
+      </SidebarNavItem> */}
     </ul>
   );
 }

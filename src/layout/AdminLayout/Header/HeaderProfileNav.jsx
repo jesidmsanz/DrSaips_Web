@@ -5,7 +5,8 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faGear, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
+import { SessionContext, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const ItemWithIcon = (props) => {
   const { icon, children } = props;
@@ -20,6 +21,8 @@ const ItemWithIcon = (props) => {
 
 export default function HeaderProfileNav() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
 
   const logout = async () => {
     const result = await signOut({ redirect: false });
@@ -34,6 +37,7 @@ export default function HeaderProfileNav() {
   return (
     <Nav>
       <Dropdown as={NavItem}>
+        <strong>{session?.user?.name || ""}</strong>
         <Dropdown.Toggle
           variant="link"
           bsPrefix="hide-caret"
@@ -54,7 +58,7 @@ export default function HeaderProfileNav() {
             Configuración
           </Dropdown.Header>
 
-          <Link href="#" passHref legacyBehavior>
+          {/* <Link href="#" passHref legacyBehavior>
             <Dropdown.Item>
               <ItemWithIcon icon={faUser}>Perfil</ItemWithIcon>
             </Dropdown.Item>
@@ -63,7 +67,7 @@ export default function HeaderProfileNav() {
             <Dropdown.Item>
               <ItemWithIcon icon={faGear}>Configuración</ItemWithIcon>
             </Dropdown.Item>
-          </Link>
+          </Link> */}
           <Dropdown.Divider />
           <Dropdown.Item onClick={logout}>
             <ItemWithIcon icon={faPowerOff}>Cerrar Sesión</ItemWithIcon>
