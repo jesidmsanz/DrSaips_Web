@@ -2,7 +2,7 @@
 const { createServer } = require("http");
 const { parse } = require("url");
 const next = require("next");
-const cors = require("cors");
+const microCors = require("micro-cors");
 const config = require("./config");
 
 const dev = process.env.NODE_ENV !== "production";
@@ -20,7 +20,11 @@ app.prepare().then(() => {
     handle(req, res, parsedUrl);
   });
 
-  server.use(cors());
+  // Crea un middleware CORS
+  const cors = microCors();
+
+  // Aplica el middleware CORS a tu servidor Next.js
+  const corsServer = cors(server);
 
   // Inicia el servidor
   server.listen(config.port, (err) => {
