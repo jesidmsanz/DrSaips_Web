@@ -2,12 +2,12 @@
 const { createServer } = require("http");
 const { parse } = require("url");
 const next = require("next");
+const cors = require("cors");
 const config = require("./config");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
 
 // Inicia la aplicación Next.js
 app.prepare().then(() => {
@@ -19,6 +19,8 @@ app.prepare().then(() => {
     // Maneja las solicitudes utilizando el handler de Next.js
     handle(req, res, parsedUrl);
   });
+
+  server.use(cors());
 
   // Inicia el servidor
   server.listen(config.port, (err) => {
