@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { AdminLayout } from "@layout";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Col,
-  Form,
-  Modal,
-  Pagination,
-  Row,
-  Spinner,
-} from "react-bootstrap";
-import { apiUrl } from "@utils/axiosConfig";
+import { Button } from "react-bootstrap";
 import AuthorizedDose from "../../../components/authorizedDoseForm";
-import ViewForm from "./viewForm";
 import ElucionesForm from "../../../components/elucionesForm";
 import GeneratorForm from "../../../components/generatorForm";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import ViewForm from "./viewForm";
 
 export default function index() {
   const [show, setShow] = useState(false);
@@ -44,6 +33,7 @@ export default function index() {
       title: "Edición: Generador",
       component: <GeneratorForm user={user} />,
       textButton: "Consultar",
+      message: "",
       style: { backgroundColor: "#205295", border: "none", color: "#FFF" },
     },
     {
@@ -51,6 +41,7 @@ export default function index() {
       component: null,
       textButton: "Consultar",
       href: "/admin/logs",
+      message: "",
       style: { backgroundColor: "#2C74B3", border: "none", color: "#FFF" },
     },
   ];
@@ -87,7 +78,9 @@ export default function index() {
           ))}
         </div>
       </AdminLayout>
-      {form && <ViewForm form={form} show={show} handleClose={handleClose} />}
+      {form?.component && (
+        <ViewForm form={form} show={show} handleClose={handleClose} />
+      )}
     </>
   );
 }

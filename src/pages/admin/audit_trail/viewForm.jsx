@@ -14,12 +14,12 @@ export default function ViewForm({ form, show, handleClose }) {
         closeButton
         style={{ backgroundColor: "#051F34", color: "white" }}
       >
-        <Modal.Title>{form.title}</Modal.Title>
+        <Modal.Title>{form?.title || ""}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <>
-          <h5 className="mb-4">{form.message}</h5>
-          {form.component}
+          <h5 className="mb-4">{form?.message || ""}</h5>
+          {form?.component || ""}
         </>
       </Modal.Body>
     </Modal>
