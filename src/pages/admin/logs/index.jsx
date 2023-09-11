@@ -18,6 +18,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { formatDate } from "@utils/dates";
 import { useRouter } from "next/router";
+import generatePDF from "../../../../utils/generatePdf";
+import { formatDataForAutoTable } from "../../../../utils/formatDataForAutoTable";
 
 // Obtener la fecha actual
 const currentDate = new Date();
@@ -50,6 +52,10 @@ const Logs = () => {
   const handleClose = () => {
     setShow(false);
     setDetails(null);
+  };
+
+  const handleGeneratePDF = async () => {
+    await generatePDF(formatDataForAutoTable(data));
   };
 
   const loadData = async () => {
@@ -165,6 +171,16 @@ const Logs = () => {
                       Exp Excel
                     </Button>
                   </ButtonGroup>
+                  <div>
+                    <Button
+                      type="button"
+                      onClick={handleGeneratePDF}
+                      variant="success"
+                      style={{ marginTop: "30px", marginLeft: "10px" }}
+                    >
+                      Exp PDF
+                    </Button>
+                  </div>
                 </div>
                 <div>
                   <Button

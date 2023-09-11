@@ -45,7 +45,7 @@ const Home = () => {
                           <Image
                             fill
                             className="rounded-circle"
-                            src="/assets/img/avatars/1.jpg"
+                            src="/assets/img/avatars/logo.png"
                             alt="user@email.com"
                           />
                           <span className="avatar-status position-absolute d-block bottom-0 end-0 bg-success rounded-circle border border-white" />
