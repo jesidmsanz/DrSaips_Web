@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AdminLayout } from "@layout";
 import {
+  Alert,
   Button,
   ButtonGroup,
   Card,
@@ -44,6 +45,7 @@ const Logs = () => {
   const [form, setForm] = useState(initialState);
   const [details, setDetails] = useState(null);
   const [show, setShow] = useState(false);
+  const [warnings, setWarnings] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -55,7 +57,12 @@ const Logs = () => {
   };
 
   const handleGeneratePDF = async () => {
-    await generatePDF(formatDataForAutoTable(data));
+    if (!data.length) {
+      setWarnings(true);
+      setTimeout(() => setWarnings(false), 4000);
+    } else {
+      await generatePDF(formatDataForAutoTable(data));
+    }
   };
 
   const loadData = async () => {
@@ -192,6 +199,12 @@ const Logs = () => {
                 </div>
               </div>
             </Form>
+            {warnings && (
+              <Alert key="warning" variant="warning">
+                No se han encontrado registros en la tabla disponibles para su
+                exportación.
+              </Alert>
+            )}
             {!loading ? (
               <>
                 <div className="table-responsive">
