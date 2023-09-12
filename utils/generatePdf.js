@@ -13,10 +13,12 @@ async function generatePDF({ headData, bodyData }) {
 
   const title = "MEDICINA NUCLEAR S.A"; // Título
   const subtitle = "NIT 824004330-3"; // Subtitle
+  const subtitle2 = "INFORME AUDIT TRAIL"; // Subtitle
 
   // Calcular el ancho del título
   const titleWidth = doc.getStringUnitWidth(title) * 16; // Tamaño de fuente x 16 (ajuste de ancho de fuente)
   const subTitle = doc.getStringUnitWidth(subtitle) * 16; // Tamaño de fuente x 16 (ajuste de ancho de fuente)
+  const subTitle2 = doc.getStringUnitWidth(subtitle2) * 16; // Tamaño de fuente x 16 (ajuste de ancho de fuente)
 
   // Calcular la posición para centrar el título horizontalmente
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -25,7 +27,8 @@ async function generatePDF({ headData, bodyData }) {
 
   // Calcular la posición para centrar el título horizontalmente
   const xPosSubtitle = (pageWidth - subTitle) / 2;
-
+  const xPosSubtitle2 = (pageWidth - subTitle2) / 2;
+  doc.setFont("helvetica", "bold");
   // Agregar el título centrado
   doc.setFontSize(14); // Tamaño de fuente para el título
   doc.text(title, xPos, 50); // Título y posición centrada horizontalmente
@@ -34,6 +37,11 @@ async function generatePDF({ headData, bodyData }) {
   doc.setFontSize(14); // Tamaño de fuente para el título
   doc.text(subtitle, xPosSubtitle, 75); // Subtitle y posición centrada horizontalmente
 
+  // Agregar el subtitle centrado
+  doc.setFontSize(14); // Tamaño de fuente para el título
+  doc.text(subtitle2, xPosSubtitle2, 100); // Subtitle y posición centrada horizontalmente
+  // Restablecer la fuente a la normal para el texto siguiente
+  doc.setFont("helvetica", "normal");
   // Agregar el logotipo en la parte superior izquierda
   doc.addImage(logoImage, "PNG", 20, 20, 160, 80); // (imagen, tipo, x, y, ancho, alto)
 
@@ -83,10 +91,12 @@ async function generatePDF({ headData, bodyData }) {
   // Calcular la posición del texto
   const textXLeft = marginLeft;
   const textYLeft = marginTopLeft;
-
+  // Establecer la fuente en negritas solo para este texto
+  doc.setFont("helvetica", "bold");
   // Agregar el texto en la posición calculada
   doc.text(textXLeft, textYLeft, textoLeft);
-
+  // Restablecer la fuente a la normal para el texto siguiente
+  doc.setFont("helvetica", "normal");
   // Restaurar el tamaño de fuente anterior
   doc.setFontSize(fontSizeBefore);
 
