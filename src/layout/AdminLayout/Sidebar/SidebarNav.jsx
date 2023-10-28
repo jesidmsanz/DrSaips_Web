@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronUp,
   faNoteSticky,
+  faLock,
   faGear,
   faMagicWandSparkles,
   faMagnifyingGlass,
@@ -155,7 +156,7 @@ export default function SidebarNav() {
       {data.some(i => i.PERMISO === 'permiso_audittrail' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
         Audit Trail
       </SidebarNavItem>}
-      {data.some(i => i.PERMISO === 'permiso_permisos' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faMagnifyingGlass} href="/admin/permisos">
+      {data.some(i => i.PERMISO === 'permiso_permisos' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faLock} href="/admin/permisos">
         Permisos
       </SidebarNavItem>}
       {/* <SidebarNavItem icon={faNoteSticky} href="#">

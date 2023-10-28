@@ -20,7 +20,7 @@ export default function index() {
   const data = [
     {
       title: "Edición: Dosis Autorizada",
-      component: <AuthorizedDose user={user}/>,
+      component: <AuthorizedDose user={user} />,
       message: "Digite número de documento del Paciente y fecha de la cita:",
       textButton: "Consultar",
       style: { backgroundColor: "#0A2647", border: "none", color: "#FFF" },
@@ -28,7 +28,7 @@ export default function index() {
     },
     {
       title: "Edición: Eluciones",
-      component: <ElucionesForm user={user}  />,
+      component: <ElucionesForm user={user} />,
       textButton: "Consultar",
       message: "Digite número de documento del Paciente y fecha de la cita:",
       style: { backgroundColor: "#144272", border: "none", color: "#FFF" },
@@ -36,7 +36,7 @@ export default function index() {
     },
     {
       title: "Edición: Generador",
-      component: <GeneratorForm user={user}  />,
+      component: <GeneratorForm user={user} />,
       textButton: "Consultar",
       message: "",
       style: { backgroundColor: "#205295", border: "none", color: "#FFF" },
@@ -71,7 +71,10 @@ export default function index() {
   };
 
   useEffect(() => {
-    if (session?.user) setUser(session.user);
+    if (session?.user && !permissions.some(i => i.USUARIO === session.user.name && i.PERMISO === 'permiso_audittrail')) setUser(session.user)
+    else {
+      route.replace('/admin')
+    }
     if (user) loadPermissions(user)
   }, [session, user]);
 

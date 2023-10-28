@@ -12,6 +12,17 @@ $enable-negative-margins: true;
 
 @import "_custom";
 
+.messageWellcome{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 60vh;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
 .logo_left {
   margin: 0 auto;
   display: flex;
