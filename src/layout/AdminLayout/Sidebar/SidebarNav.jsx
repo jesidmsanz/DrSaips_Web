@@ -121,7 +121,7 @@ export default function SidebarNav() {
       console.log('user', user)
       const result = await apiUrl.get(
         `/api/users/permissionsByUser/${user}`
-      );
+      );  
       if (result.status === 200) {
         setData(result?.data?.data);
       }
@@ -131,7 +131,7 @@ export default function SidebarNav() {
   };
 
   useEffect(() => {
-    if (session?.user?.name) loadPermisionsByUser(session.user.name)
+    if (session?.user?.name && !data.length) loadPermisionsByUser(session.user.name)
   }, [session])
 
   return (
