@@ -32,8 +32,22 @@ router.post(`${apiURL}/login`, async function (req, res) {
 // GET: api/users
 router.get(apiURL, async function (req, res) {
   try {
-    console.log("JEsidddd");
     const query = `Select * from view_auditoria_citas`;
+    const result = await getDataOfOracle(query);
+
+    res.json({ message: "Success", data: result });
+  } catch (error) {
+    console.log("ERROR: ", error);
+    res.status(400).json({ message: "Error on users", error });
+  }
+});
+
+// GET: api/users/permissionsByUser
+router.get(`${apiURL}/permissionsByUser/:user`, async function (req, res) {
+  try {
+    const { user } = req.params;
+    const query = `Select * from USUARIOS_PERMISOS WHERE USUARIO = '${user}'`;
+    console.log("query", query);
     const result = await getDataOfOracle(query);
 
     res.json({ message: "Success", data: result });

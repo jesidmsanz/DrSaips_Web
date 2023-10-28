@@ -101,7 +101,7 @@ const Login = () => {
                           type="submit"
                           disabled={submitting}
                         >
-                          Login
+                          {submitting ? 'Login...' : 'login'}
                         </Button>
                       </Col>
                     </Row>
