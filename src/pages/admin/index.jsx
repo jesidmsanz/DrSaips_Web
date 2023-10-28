@@ -20,12 +20,12 @@ const Home = () => {
       <div className="messageWellcome">
 
         <Image
-          width={300}
-          height={250}
+          width={200}
+          height={150}
           src="/assets/img/avatars/logo_mediano.png"
           alt="user@example.com"
         />
-        <h2>¡Bienvenidos a Dr. Saips, Si requieren asistencia por favor comunicate con el equipo de soporte.</h2>
+        <h4>¡Bienvenidos a Dr. Saips, Si requieren asistencia por favor comunicate con el equipo de soporte.</h4>
       </div>
     </AdminLayout>
   );
