@@ -29,3 +29,27 @@ export const getDataOfOracle = async (query) => {
     console.log("error", error);
   }
 };
+
+export const executeQueryOfOracle = async (query) => {
+  try {
+    if (query) {
+      console.log("route", process.env.RUTE_INSTANTCLIENT);
+      OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
+      // OracleDB.initOracleClient({ libDir: "/var/www/html/websites/DrSaips_Web/instantclient_21_10" });
+
+      const connection = await OracleDB.getConnection(credentialsOracleDb);
+
+      const result = await connection.execute(query, [], {
+        autoCommit: true, // Asegúrate de establecer autoCommit en true para realizar la operación de eliminación
+      });
+
+      await connection.close();
+
+      return result;
+    }
+    return null;
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+};

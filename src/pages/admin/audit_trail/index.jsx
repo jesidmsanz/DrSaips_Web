@@ -17,7 +17,6 @@ export default function index() {
   const [loading, setLoading] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const { data: session, status } = useSession();
-  console.log('session', session)
   const data = [
     {
       title: "Edición: Dosis Autorizada",

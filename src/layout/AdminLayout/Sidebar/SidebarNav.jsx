@@ -22,6 +22,8 @@ import {
 import classNames from "classnames";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { apiUrl } from "@utils/axiosConfig";
 
 const SidebarNavItem = (props) => {
   const { icon, children, href } = props;
@@ -108,6 +110,29 @@ const SidebarNavGroup = (props) => {
 };
 
 export default function SidebarNav() {
+  const { data: session, status } = useSession();
+  const [data, setData] = useState([])
+
+  console.log('data:D', data)
+
+  const loadPermisionsByUser = async (user) => {
+    try {
+      console.log('user', user)
+      const result = await apiUrl.get(
+        `/api/users/permissionsByUser/${user}`
+      );
+      if (result.status === 200) {
+        setData(result?.data?.data);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user?.name) loadPermisionsByUser(session.user.name)
+  }, [session])
+
   return (
     <ul className="list-unstyled">
       {/* <SidebarNavItem icon={faGauge} href="/">
@@ -127,10 +152,12 @@ export default function SidebarNav() {
           alt="user@example.com"
         />
       </div>
-      {/* <SidebarNavTitle>Menu</SidebarNavTitle> */}
-      <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
+      {data.some(i => i.PERMISO === 'permiso_audittrail' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
         Audit Trail
-      </SidebarNavItem>
+      </SidebarNavItem>}
+      {data.some(i => i.PERMISO === 'permiso_permisos' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faMagnifyingGlass} href="/admin/permisos">
+        Permisos
+      </SidebarNavItem>}
       {/* <SidebarNavItem icon={faNoteSticky} href="#">
         Reportes
       </SidebarNavItem>
