@@ -146,7 +146,7 @@ const Logs = () => {
                   }}>
                     <option value="" >Seleccione</option>
                     {users.map((i) => (
-                      <option value={i.LOGIN} key={i.LOGIN} >{i.LOGIN} - {session?.user?.fullName || ''}</option>
+                      <option value={i.LOGIN} key={i.LOGIN} >{i.LOGIN} </option>
                     ))}
                   </Form.Control>
                 </Form.Group>
