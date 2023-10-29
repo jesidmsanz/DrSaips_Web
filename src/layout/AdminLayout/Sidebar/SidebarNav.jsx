@@ -112,38 +112,8 @@ const SidebarNavGroup = (props) => {
 
 export default function SidebarNav() {
   const { data: session, status } = useSession();
-  const [data, setData] = useState([])
-
-  console.log('data:D', data)
-
-  const loadPermisionsByUser = async (user) => {
-    try {
-      console.log('user', user)
-      const result = await apiUrl.get(
-        `/api/users/permissionsByUser/${user}`
-      );
-      if (result.status === 200) {
-        setData(result?.data?.data);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (session?.user?.name && data.length === 0) loadPermisionsByUser(session.user.name)
-  }, [session])
-
   return (
     <ul className="list-unstyled">
-      {/* <SidebarNavItem icon={faGauge} href="/">
-        Dashboard
-        <small className="ms-auto">
-          <Badge bg="info" className="ms-auto">
-            NEW
-          </Badge>
-        </small>
-      </SidebarNavItem> */}
       <SidebarNavItem href="/admin/audit_trail"></SidebarNavItem>
       <div className="logo_left">
         <Image
@@ -153,18 +123,12 @@ export default function SidebarNav() {
           alt="user@example.com"
         />
       </div>
-      {data.some(i => i.PERMISO === 'permiso_audittrail' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
+      {session?.user?.permissions?.some(i => i.PERMISO === 'permiso_audittrail' && session?.user?.login === i.USUARIO) && <SidebarNavItem icon={faMagnifyingGlass} href="/admin/audit_trail">
         Audit Trail
       </SidebarNavItem>}
-      {data.some(i => i.PERMISO === 'permiso_permisos' && session?.user?.name === i.USUARIO) && <SidebarNavItem icon={faLock} href="/admin/permisos">
+      {session?.user?.permissions?.some(i => i.PERMISO === 'permiso_permisos' && session?.user?.login === i.USUARIO) && <SidebarNavItem icon={faLock} href="/admin/permisos">
         Permisos
       </SidebarNavItem>}
-      {/* <SidebarNavItem icon={faNoteSticky} href="#">
-        Reportes
-      </SidebarNavItem>
-      <SidebarNavItem icon={faGear} href="#">
-        Configuración
-      </SidebarNavItem> */}
     </ul>
   );
 }

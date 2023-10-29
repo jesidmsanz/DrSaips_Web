@@ -15,7 +15,6 @@ export default function index() {
   const [user, setUser] = useState(null);
   const route = useRouter();
   const [loading, setLoading] = useState(false);
-  const [permissions, setPermissions] = useState([]);
   const { data: session, status } = useSession();
   const data = [
     {
@@ -24,7 +23,7 @@ export default function index() {
       message: "Digite número de documento del Paciente y fecha de la cita:",
       textButton: "Consultar",
       style: { backgroundColor: "#0A2647", border: "none", color: "#FFF" },
-      permission: permissions.some(i => i.PERMISO === 'permiso_dosis_autorizada')
+      permission: session?.user?.permissions?.some(i => i.PERMISO === 'permiso_dosis_autorizada')
     },
     {
       title: "Edición: Eluciones",
@@ -32,7 +31,7 @@ export default function index() {
       textButton: "Consultar",
       message: "Digite número de documento del Paciente y fecha de la cita:",
       style: { backgroundColor: "#144272", border: "none", color: "#FFF" },
-      permission: permissions.some(i => i.PERMISO === 'permiso_eluciones')
+      permission: session?.user?.permissions?.some(i => i.PERMISO === 'permiso_eluciones')
     },
     {
       title: "Edición: Generador",
@@ -40,7 +39,7 @@ export default function index() {
       textButton: "Consultar",
       message: "",
       style: { backgroundColor: "#205295", border: "none", color: "#FFF" },
-      permission: permissions.some(i => i.PERMISO === 'permiso_generador')
+      permission: session?.user?.permissions?.some(i => i.PERMISO === 'permiso_generador')
     },
     {
       title: "Logs",
@@ -49,21 +48,9 @@ export default function index() {
       href: "/admin/logs",
       message: "",
       style: { backgroundColor: "#2C74B3", border: "none", color: "#FFF" },
-      permission: permissions.some(i => i.PERMISO === 'permiso_logs')
+      permission: session?.user?.permissions?.some(i => i.PERMISO === 'permiso_logs')
     },
   ];
-
-  const loadPermissions = async (userData) => {
-    try {
-      if (permissions.length > 0) return;
-      setLoading(true)
-      const result = await apiUrl.get(`/api/users/permissionsByUser/${userData?.name}`)
-      setPermissions(result.data.data)
-      setLoading(false)
-    } catch (error) {
-      console.log('error', error)
-    }
-  }
 
   const handleClose = () => {
     setShow(!show);
@@ -71,12 +58,11 @@ export default function index() {
   };
 
   useEffect(() => {
-    if (session?.user && !permissions.some(i => i.USUARIO === session.user.name && i.PERMISO === 'permiso_audittrail')) setUser(session.user)
+    if (status === 'authenticated' && session?.user?.permissions?.some(i => i.USUARIO === session.user.login && i.PERMISO === 'permiso_audittrail')) setUser(session.user)
     else {
       route.replace('/admin')
     }
-    if (user) loadPermissions(user)
-  }, [session, user]);
+  }, [status]);
 
 
   return (

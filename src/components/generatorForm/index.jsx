@@ -47,7 +47,7 @@ export default function GeneratorForm({ user }) {
       if (formUpdateData) {
         const update = await apiUrl.put(
           `/api/generator/${formUpdateData?.ORD_GEN}`,
-          { ...formUpdateData, user: user?.name || "" }
+          { ...formUpdateData, user: user?.login || "" }
         );
         if (update.status === 200) {
           loadData();

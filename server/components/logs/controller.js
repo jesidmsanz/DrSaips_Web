@@ -12,8 +12,6 @@ function findAllByRangeDate(dateStart, dateEnd, type) {
         : `Select * from view_audit_trail
         where fecha_registro BETWEEN '${dateStart}' AND '${finishDate}' 
         order by fecha_Registro desc`;
-
-    console.log("query :>> ", query);
     const result = await getDataOfOracle(query);
     resolve(result);
   });

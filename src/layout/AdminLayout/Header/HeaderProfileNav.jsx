@@ -23,7 +23,6 @@ export default function HeaderProfileNav() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-
   const logout = async () => {
     const result = await signOut({ redirect: false });
 
@@ -37,7 +36,7 @@ export default function HeaderProfileNav() {
   return (
     <Nav>
       <Dropdown as={NavItem}>
-        <strong>{session?.user?.name || ""}</strong>
+        <strong>{session?.user?.fullName || ""}</strong>
         <Dropdown.Toggle
           variant="link"
           bsPrefix="hide-caret"

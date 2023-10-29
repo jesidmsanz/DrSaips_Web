@@ -50,7 +50,7 @@ export default function AuthorizedDose({ user }) {
       if (formUpdateData) {
         const update = await apiUrl.put(
           `/api/authorized_dose/${formUpdateData?.ORDINAL}`,
-          { ...formUpdateData, user: user?.name || "" }
+          { ...formUpdateData, user: user?.login || "" }
         );
         if (update?.data?.body?.rowsAffected === 1) {
           loadData();

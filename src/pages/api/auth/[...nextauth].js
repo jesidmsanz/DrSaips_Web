@@ -11,26 +11,27 @@ const options = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials) => {
+      async authorize(credentials, req) {
         const { username, password } = credentials;
 
-        const query = `SELECT LOGIN AS LOG, DECODE (PWD('${username}','${password}'), CLAVE, 1, 0) AS Acceso FROM USUARIOS WHERE LOGIN = '${username}'`;
+        const query = `SELECT pri_nombre || ' ' || pri_apellido as nombre, LOGIN AS LOG, DECODE (PWD('${username}','${password}'), CLAVE, 1, 0) AS Acceso FROM USUARIOS WHERE LOGIN = '${username}'`;
         const result = await getDataOfOracle(query);
-
         if (result && result.length > 0) {
           const user = result[0];
-          // const permissionsQuery = `Select * from USUARIOS_PERMISOS WHERE USUARIO = '${user.LOG}'`;
-          // const permissions = await getDataOfOracle(permissionsQuery);
+          const permissionsQuery = `Select * from USUARIOS_PERMISOS WHERE USUARIO = '${user.LOG}'`;
+          const permissions = await getDataOfOracle(permissionsQuery);
           if (user && user.ACCESO === 1) {
-            return Promise.resolve({
+            const userData = {
               id: user.LOG,
               name: user.LOG,
-              // permissions: permissions,
+              fullName: user.NOMBRE,
+              permissions: permissions,
               redirect: "/admin/audit_trail",
-            });
+            };
+            return userData;
           }
         }
-        return Promise.resolve(null);
+        return null;
       },
     }),
   ],
@@ -38,8 +39,24 @@ const options = {
     signIn: "/login",
   },
   secret: process.env.AUTH_JWT_SECRET,
+
   callbacks: {
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.user = {
+          fullName: user.fullName || "",
+          login: user.name || false,
+          permissions: user.permissions || null,
+        };
+      }
+      return token;
+    },
     session: ({ session, token }) => {
+      if (token) {
+        session.id = token.id;
+        session.user = token.user;
+      }
       return session;
     },
     redirect({ url, baseUrl }) {

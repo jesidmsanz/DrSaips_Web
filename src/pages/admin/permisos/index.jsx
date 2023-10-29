@@ -82,7 +82,6 @@ const Logs = () => {
 
   const loadPermisionsByUser = async (user) => {
     try {
-      console.log('user', user)
       const result = await apiUrl.get(
         `/api/users/permissionsByUser/${user}`
       );
@@ -147,7 +146,7 @@ const Logs = () => {
                   }}>
                     <option value="" >Seleccione</option>
                     {users.map((i) => (
-                      <option value={i.LOGIN} key={i.LOGIN} >{i.LOGIN}</option>
+                      <option value={i.LOGIN} key={i.LOGIN} >{i.LOGIN} - {session?.user?.fullName || ''}</option>
                     ))}
                   </Form.Control>
                 </Form.Group>

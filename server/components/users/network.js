@@ -11,7 +11,6 @@ const apiURL = "/api/users";
 router.post(`${apiURL}/login`, async function (req, res) {
   try {
     const { username, password } = req.body;
-    console.log("Login", username, password);
     const query = `SELECT LOGIN AS LOG, DECODE (PWD('${username}','${password}'), CLAVE, 1, 0) AS Acceso FROM USUARIOS WHERE LOGIN = '${username}'`;
     const result = await getDataOfOracle(query);
     if (result && result.length > 0) {
@@ -46,7 +45,6 @@ router.get(apiURL, async function (req, res) {
 router.get(`${apiURL}/permissionsByUser`, async function (req, res) {
   try {
     const query = `Select * from USUARIOS_PERMISOS`;
-    console.log("query", query);
     const result = await getDataOfOracle(query);
 
     res.json({ message: "Success", data: result });
@@ -61,7 +59,6 @@ router.get(`${apiURL}/permissionsByUser/:user`, async function (req, res) {
   try {
     const { user } = req.params;
     const query = `Select * from USUARIOS_PERMISOS WHERE USUARIO = '${user}'`;
-    console.log("query", query);
     const result = await getDataOfOracle(query);
 
     res.json({ message: "Success", data: result });
@@ -77,7 +74,6 @@ router.post(`${apiURL}/addPermission`, async function (req, res) {
     console.log("ADD PERMISSION");
     const { USUARIO, PERMISO } = req.body; // Asegúrate de que los campos 'usuario' y 'permiso' existan en el cuerpo de la solicitud
     const query = `INSERT INTO USUARIOS_PERMISOS (USUARIO, PERMISO) VALUES ('${USUARIO}', '${PERMISO}')`;
-    console.log("query", query);
     // Ejecuta la consulta para insertar los datos en la base de datos
     const result = await executeQueryOfOracle(query);
 
@@ -96,7 +92,6 @@ router.delete(
       console.log("DELETE PERMISSION");
       const { usuario, permiso } = req.params; // Obtiene los parámetros de la URL
       const query = `DELETE FROM USUARIOS_PERMISOS WHERE USUARIO = '${usuario}' AND PERMISO = '${permiso}'`;
-      console.log("query", query);
       // Ejecuta la consulta para eliminar los datos de la base de datos
       const result = await executeQueryOfOracle(query);
 

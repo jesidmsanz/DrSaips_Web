@@ -50,7 +50,7 @@ export default function ElucionesForm({ user }) {
       if (formUpdateData) {
         const update = await apiUrl.put(
           `/api/eluciones/${formUpdateData?.ORDINAL}`,
-          { ...formUpdateData, user: user?.name || "" }
+          { ...formUpdateData, user: user?.login || "" }
         );
         if (update.status === 200) {
           loadData();
