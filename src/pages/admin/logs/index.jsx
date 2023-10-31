@@ -48,7 +48,7 @@ const Logs = () => {
   const [warnings, setWarnings] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value || null });
   };
 
   const handleClose = () => {
@@ -71,6 +71,7 @@ const Logs = () => {
       const dateStart = convertToCustomDate(form.dateStart);
       const dateEnd = convertToCustomDate(form.dateEnd);
       const type = form.type || null;
+      console.log('type :>> ', type);
       const result = await apiUrl.get(
         `/api/logs/${dateStart}/${dateEnd}/${type}`
       );
@@ -151,7 +152,7 @@ const Logs = () => {
                       onChange={handleChange}
                       value={form.type}
                     >
-                      <option value={null}>Sleccione un tipo</option>
+                      <option value=''>Sleccione un tipo</option>
                       <option value="Dosis Autorizada">Dosis Autorizada</option>
                       <option value="Eluciones">Eluciones</option>
                       <option value="Generador">Generador</option>
