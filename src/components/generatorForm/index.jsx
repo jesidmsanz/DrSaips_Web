@@ -233,7 +233,7 @@ export default function GeneratorForm({ user }) {
                 <Row>
                   <Col sm={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Med Buld</Form.Label>
+                      <Form.Label>Med Bult</Form.Label>
                       <Form.Control
                         type="number"
                         id="MED_BULT"
@@ -245,7 +245,7 @@ export default function GeneratorForm({ user }) {
                   </Col>
                   <Col sm={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Nuevo Med Buld</Form.Label>
+                      <Form.Label>Nuevo Med Bult</Form.Label>
                       <Form.Control
                         type="number"
                         id="NEW_MED_BULT"
