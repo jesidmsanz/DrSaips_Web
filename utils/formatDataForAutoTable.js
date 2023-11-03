@@ -5,7 +5,7 @@ export const formatDataForAutoTable = (data) => {
     return { head: [], body: [] };
   }
   const newData = data.map((item) => {
-    const date_cite = item.FECHA_CITA.split("T")[0];
+    const date_cite = item?.FECHA_CITA ? item?.FECHA_CITA.split("T")[0] : "";
     item.FECHA_CITA = date_cite;
     item.PACIENTE = item.PACIENTE.replace(/\s+/g, " ").trim();
     item.USUARIO = item.USUARIO.replace(/\s+/g, " ").trim();
