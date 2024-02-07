@@ -15,6 +15,7 @@ const options = {
         const { username, password } = credentials;
 
         const query = `SELECT pri_nombre || ' ' || pri_apellido as nombre, LOGIN AS LOG, DECODE (PWD('${username}','${password}'), CLAVE, 1, 0) AS Acceso FROM USUARIOS WHERE LOGIN = '${username}'`;
+        console.log("query login", query);
         const result = await getDataOfOracle(query);
         if (result && result.length > 0) {
           const user = result[0];
