@@ -5,10 +5,13 @@ const OracleDB = require("oracledb");
 export const getDataOfOracle = async (query) => {
   try {
     if (query) {
+      console.log("QUERY LOGIN", query);
       OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
       // OracleDB.initOracleClient({ libDir: "/var/www/html/websites/DrSaips_Web/instantclient_21_10" });
 
       const connection = await OracleDB.getConnection(credentialsOracleDb);
+
+      console.log("connection", connection);
 
       const result = await connection.execute(query, [], {
         resultSet: true,
