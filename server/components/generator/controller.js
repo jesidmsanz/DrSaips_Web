@@ -29,12 +29,15 @@ async function updateByNoGenerator(ORD_GEN, data) {
     } = data;
 
     console.log("data :>------> ", data);
-    
+
     OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
     const connection = await OracleDB.getConnection(credentialsOracleDb);
 
     const new_fec_recepcion = NEW_FEC_RECEPCION ?? FEC_RECEPCION;
     const new_fec_salida = NEW_FEC_SALIDA ?? FEC_SALIDA;
+
+    console.log("new_fec_recepcion :>> ", new_fec_recepcion);
+    console.log("new_fec_salida :>> ", new_fec_salida);
 
     const query = `Update eluciones set NRO_GENERADOR = '${
       NEW_NRO_GENERADOR || NRO_GENERADOR
