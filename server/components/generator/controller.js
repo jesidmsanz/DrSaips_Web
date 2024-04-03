@@ -45,9 +45,9 @@ async function updateByNoGenerator(ORD_GEN, data) {
     const query = `Update eluciones set NRO_GENERADOR = '${
       NEW_NRO_GENERADOR || NRO_GENERADOR
     }', ACTIVIDAD = ${NEW_ACTIVIDAD || ACTIVIDAD?.toString()}, 
-    FEC_RECEPCION = TO_DATE('${convertToCustomDate2(
+    FEC_RECEPCION = TO_DATE('${convertToCustomDate(
       new_fec_recepcion.split("T")[0]
-    )}','dd/mm/yy'), FEC_SALIDA = TO_DATE('${convertToCustomDate2(
+    )}','dd/mm/yy'), FEC_SALIDA = TO_DATE('${convertToCustomDate(
       new_fec_salida.split("T")[0]
     )}','dd/mm/yy'), MED_BULT = '${NEW_MED_BULT || MED_BULT}'
     where ORD_GEN = ${ORD_GEN}`;
