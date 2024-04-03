@@ -27,6 +27,9 @@ async function updateByNoGenerator(ORD_GEN, data) {
       NEW_MED_BULT,
       user,
     } = data;
+
+    console.log("data :>------> ", data);
+    
     OracleDB.initOracleClient({ libDir: process.env.RUTE_INSTANTCLIENT });
     const connection = await OracleDB.getConnection(credentialsOracleDb);
 
