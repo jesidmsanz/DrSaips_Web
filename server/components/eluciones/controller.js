@@ -49,6 +49,7 @@ async function updateByEluciones(ordinal, data) {
           user || ""
         }', '${field}', 
       '${oldValue}', '${newValue}', '${OBSERVACION || " "}')`;
+      console.log('query :>> ', query);
         const search = await connection.execute(query, [], {
           outFormat: OracleDB.OUT_FORMAT_OBJECT,
           autoCommit: true,

@@ -29,6 +29,7 @@ async function updateByAuthorizedDose(ordinal, data) {
 
     const num_ordinal = parseFloat(ordinal);
     const query = `Update citas set dosis_aut = ${NEW_DOSIS_AUTORIZADA} where ordinal = ${num_ordinal}`;
+    console.log("query :>> ", query);
     const search = await connection.execute(query, [], {
       outFormat: OracleDB.OUT_FORMAT_OBJECT,
       autoCommit: true,
@@ -44,6 +45,7 @@ async function updateByAuthorizedDose(ordinal, data) {
   '${DOSIS_AUTORIZADA.replace(" mCi", "")}', '${NEW_DOSIS_AUTORIZADA}', '${
         OBSERVACION || " "
       }')`;
+      console.log("query :>> ", query);
       const search = await connection.execute(query, [], {
         outFormat: OracleDB.OUT_FORMAT_OBJECT,
         autoCommit: true,
