@@ -49,7 +49,7 @@ async function updateByNoGenerator(ORD_GEN, data) {
       new_fec_recepcion.split("T")[0]
     )}','dd/mm/yy'), FEC_SALIDA = TO_DATE('${convertToCustomDate(
       new_fec_salida.split("T")[0]
-    )}','dd/mm/yy'), MED_BULT = '${NEW_MED_BULT || MED_BULT}'
+    )}','dd/mm/yy'), MED_BULT = ${NEW_MED_BULT || MED_BULT}
     where ORD_GEN = ${ORD_GEN}`;
     console.log("query :>> ", query);
     const search = await connection.execute(query, [], {
